@@ -13,22 +13,22 @@ public class CaServer {
 
     
     public static void main(String[] args) {
-        CaServer cserver = new CaServer();
+        CaServer caserver = new CaServer();
         try {
-            cserver.handleClient("localhost", 7777);
+            caserver.handleClient("localhost", 7777);
         } catch (IOException ex) {
             Logger.getLogger(CaServer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
     public void handleClient(String ip, int port) throws IOException {
-        ServerSocket servs = new ServerSocket();
-        servs.bind(new InetSocketAddress(ip, port));
+        ServerSocket server = new ServerSocket();
+        server.bind(new InetSocketAddress(ip, port));
         
         
         while(true) {
-            Socket socket = servs.accept();
-            ClientHandler ch = new ClientHandler(socket);
+            Socket connection = server.accept();
+            ClientHandler ch = new ClientHandler(connection);
             ch.start();
         }
     }
