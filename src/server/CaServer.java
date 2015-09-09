@@ -16,7 +16,7 @@ public class CaServer {
     private String nUser;
     Scanner sc;
 
-    HashMap<String, ClientHandler> clients = new HashMap();
+    HashMap<String, Socket> clients = new HashMap();
 
     public static void main(String[] args) {
         CaServer caserver = new CaServer();
@@ -37,7 +37,8 @@ public class CaServer {
             String uname = sc.nextLine();
             System.out.println(uname);
             ClientHandler ch = new ClientHandler(connection);
-
+            clients.put(uname, ch.socket);
+            System.out.println("Print from clients : " + clients.toString());
             System.out.println("Connection established");
             ch.start();
             nUser = ch.getUsername();
