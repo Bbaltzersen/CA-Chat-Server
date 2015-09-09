@@ -45,29 +45,36 @@ public class ClientHandler extends Thread {
             server.addClientHandler(username, this);
         }
         parts = null;
-        while (connected && input != null) {
+        while (connected) {
             input = sc.nextLine();
             parts = input.split("#");
 
             if (parts[0].equals("STOP")) {
-                endConnection();
+                try {
+                    endConnection();
+                } catch (IOException ex) {
+                    Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 pw.println("You're logged off loser!!");
-                parts = null;
+            parts = null;
+                    break;
             }
             input = sc.nextLine();
             parts = input.split("#");
             if (parts[0].equals("MSG")) {
 //                send();
                 pw.println("This is where you should send a message");
-                parts = null;
+            parts = null;
             }
         }
 
-//        input = "";
+        input = "";
         parts = null;
     }
 
-    public void endConnection() {
+    public void endConnection() throws IOException {
+        server.removeUser(username, this);
+        socket.close();
     }
 
     public String getUsername() {

@@ -40,7 +40,9 @@ public class CaServer {
     }
 
     public void removeUser(String user, ClientHandler ch) {
+        System.out.println("Clients before erase : " + clients.toString());
         clients.remove(user, ch);
+        System.out.println("Clients after erase : " +clients.toString());
     }
 
 //    public void addUser(String user, Socket socket) throws IOException {
