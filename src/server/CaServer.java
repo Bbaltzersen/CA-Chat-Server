@@ -35,6 +35,15 @@ public class CaServer {
             Socket connection = server.accept();
             sc = new Scanner(connection.getInputStream());
             String uname = sc.nextLine();
+            String fixName = null;
+            if(!uname.contains("USER#")) {
+              connection.close();
+            }
+            else {
+                serverCheck sCheck = new serverCheck();
+                fixName = sCheck.checkUsername(uname);
+            }
+            System.out.println(fixName);
             System.out.println(uname);
             ClientHandler ch = new ClientHandler(connection);
             clients.put(uname, ch.socket);

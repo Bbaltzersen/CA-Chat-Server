@@ -33,32 +33,6 @@ public class ClientHandler extends Thread {
         String name;
         while (connected) {
         String input = sc.nextLine();
-        String[] parts = input.split("#");
-        if (!parts[0].equals("USER")) {
-            try {
-                socket.close(); // closing the connection
-            } catch (IOException ex) {
-                Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-            if (parts[0].equals("USER")) {
-//                users = new HashMap();
-//                users.put(parts[0], parts[1]);
-                System.out.println(this.toString() + " <---- This");
-                name = parts[1];
-//                try {
-//                server.addUser(parts[1], socket);
-//                }
-//                catch (Exception e) {
-//                    System.out.println("Error");
-//                }
-            }
-            if(parts[0].equals("MSG")){
-                send(parts[1]);
-            }
-            else{
-                System.out.println("Apenado senior, no es un User!");
-            }
         }
     }
 
