@@ -14,7 +14,7 @@ public class CaServer {
     private String nUser;
     Scanner sc;
 
-    HashMap<String, ClientHandler> clients = new HashMap();
+    HashMap<String, Socket> clients = new HashMap();
 
     public static void main(String[] args) {
         CaServer caserver = new CaServer();
@@ -39,12 +39,12 @@ public class CaServer {
         }
     }
 
-    public void removeUser(String user, ClientHandler ch) {
-        clients.remove(user, ch);
+    public void removeUser(String user, Socket socket) {
+        clients.remove(user, socket);
     }
 
-    public void addUser(String user, ClientHandler ch) {
-        clients.put(nUser, ch);
-
+    public void addUser(String user, Socket socket) {
+        clients.put(nUser, socket);
+        System.out.println(clients.toString());
     }
 }

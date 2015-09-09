@@ -14,12 +14,12 @@ import java.util.logging.Logger;
  * @author acer
  */
 public class ClientHandler extends Thread {
-
+    CaServer server;
     String username;
     Socket socket;
     PrintWriter pw;
     Scanner sc;
-    Map users;
+//    Map users;
 
     ClientHandler(Socket socket) throws IOException {
         this.socket = socket;
@@ -42,9 +42,11 @@ public class ClientHandler extends Thread {
             }
         }
             if (parts[0].equals("USER")) {
-                users = new HashMap();
-                users.put(parts[0], parts[1]);
-
+//                users = new HashMap();
+//                users.put(parts[0], parts[1]);
+                System.out.println("User from if : " + parts[1]);
+                
+                server.addUser(parts[1], socket);
             }else{
                 System.out.println("Apenado senior, no es un User!");
             }
