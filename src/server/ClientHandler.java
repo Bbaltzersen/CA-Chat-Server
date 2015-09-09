@@ -14,6 +14,7 @@ import java.util.logging.Logger;
  * @author acer
  */
 public class ClientHandler extends Thread {
+
     CaServer server;
     String username;
     Socket socket;
@@ -21,7 +22,7 @@ public class ClientHandler extends Thread {
     Scanner sc;
 //    Map users;
 
-    ClientHandler(Socket socket,CaServer s) throws IOException {
+    ClientHandler(Socket socket, CaServer s) throws IOException {
         this.server = s;
         this.socket = socket;
         pw = new PrintWriter(socket.getOutputStream(), true);
@@ -31,29 +32,51 @@ public class ClientHandler extends Thread {
     @Override
     public void run() {
         boolean connected = true;
+        String parts[];
         String name;
         String input = sc.nextLine();
-        String[] parts = input.split("#");
-        if(!parts[0].equals("USER")){
+        parts = input.split("#");
+        if (!parts[0].equals("USER")) {
             //close connection
         }
-        username = parts[1];
-        server.addClientHandler(username, this);
-        while (connected) {
-            input = sc.nextLine();
-            
-            System.out.println("input" + input);
+        if (parts[0].equals("USER")) {
+
+            username = parts[1];
+            server.addClientHandler(username, this);
         }
-//        if(sc.nextLine()!= null){
-//        }
+        parts = null;
+        while (connected && input != null) {
+            input = sc.nextLine();
+            parts = input.split("#");
+
+            if (parts[0].equals("STOP")) {
+                endConnection();
+                pw.println("You're logged off loser!!");
+                parts = null;
+            }
+            input = sc.nextLine();
+            parts = input.split("#");
+            if (parts[0].equals("MSG")) {
+//                send();
+                pw.println("This is where you should send a message");
+                parts = null;
+            }
+        }
+
+//        input = "";
+        parts = null;
+    }
+
+    public void endConnection() {
     }
 
     public String getUsername() {
         return username;
     }
-    public void send(String msg){
-        
-                 pw.println(msg);
+
+    public void send(String msg) {
+
+        pw.println(msg);
 
     }
 }
