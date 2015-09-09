@@ -32,12 +32,19 @@ public class CaServer {
         while (true) {
             Socket connection = server.accept();
             ClientHandler ch = new ClientHandler(connection);
-            String input = sc.nextLine();
-            String[] parts = input.split("#");
-            nUser = parts[1];
+
+            System.out.println("Connection established");
             ch.start();
-            clients.put(nUser, ch);
 
         }
+    }
+
+    public void removeUser(String user, ClientHandler ch) {
+        clients.remove(user, ch);
+    }
+
+    public void addUser(String user, ClientHandler ch) {
+        clients.put(nUser, ch);
+
     }
 }

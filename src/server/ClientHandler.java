@@ -27,19 +27,21 @@ public class ClientHandler extends Thread {
         sc = new Scanner(socket.getInputStream());
     }
 
+    @Override
     public void run() {
+        boolean connected = true;
+        while (connected) {
         String input = sc.nextLine();
         String[] parts = input.split("#");
-        if (!parts[0].equals("USER#")) {
+            System.out.println("User " + parts[0] + "Username" + parts[1]);
+        if (!parts[0].equals("USER")) {
             try {
                 socket.close(); // closing the connection
             } catch (IOException ex) {
                 Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        boolean connected = true;
-        while (connected) {
-            if (parts[0].equals("USER#")) {
+            if (parts[0].equals("USER")) {
                 users = new HashMap();
                 users.put(parts[0], parts[1]);
 
