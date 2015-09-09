@@ -16,7 +16,7 @@ public class CaServer {
     private String nUser;
     Scanner sc;
 
-    HashMap<String, Socket> clients = new HashMap();
+    HashMap<String, ClientHandler> clients = new HashMap();
 
     public static void main(String[] args) {
         CaServer caserver = new CaServer();
@@ -33,24 +33,9 @@ public class CaServer {
 
         while (true) {
             Socket connection = server.accept();
-            sc = new Scanner(connection.getInputStream());
-            String uname = sc.nextLine();
-            String fixName = null;
-            if(!uname.contains("USER#")) {
-              connection.close();
-            }
-            else {
-                serverCheck sCheck = new serverCheck();
-                fixName = sCheck.checkUsername(uname);
-            }
-            System.out.println(fixName);
-            System.out.println(uname);
-            ClientHandler ch = new ClientHandler(connection);
-            clients.put(uname, ch.socket);
-            System.out.println("Print from clients : " + clients.toString());
-            System.out.println("Connection established");
-            ch.start();
-            nUser = ch.getUsername();
+            ClientHandler c = new ClientHandler(connection, this);
+            c.start();
+            
         }
     }
 
@@ -73,5 +58,21 @@ public class CaServer {
 
         }
 
+    }
+    private void sendUserList(){
+        String users = "";
+        for(String user : clients.keySet()){
+            users+= users+"," + user;
+            
+        }
+        String fullInfo = "USERLIST#" + users;
+        for(ClientHandler handler : clients.values()){
+            handler.send(fullInfo);
+        }
+    }
+    public void addClientHandler(String username, ClientHandler ch){
+        clients.put(username, ch);
+        sendUserList();
+        
     }
 }

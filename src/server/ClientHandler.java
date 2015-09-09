@@ -21,7 +21,8 @@ public class ClientHandler extends Thread {
     Scanner sc;
 //    Map users;
 
-    ClientHandler(Socket socket) throws IOException {
+    ClientHandler(Socket socket,CaServer s) throws IOException {
+        this.server = s;
         this.socket = socket;
         pw = new PrintWriter(socket.getOutputStream(), true);
         sc = new Scanner(socket.getInputStream());
@@ -31,9 +32,20 @@ public class ClientHandler extends Thread {
     public void run() {
         boolean connected = true;
         String name;
-        while (connected) {
         String input = sc.nextLine();
+        String[] parts = input.split("#");
+        if(!parts[0].equals("USER")){
+            //close connection
         }
+        username = parts[1];
+        server.addClientHandler(username, this);
+        while (connected) {
+            input = sc.nextLine();
+            
+            System.out.println("input" + input);
+        }
+//        if(sc.nextLine()!= null){
+//        }
     }
 
     public String getUsername() {
