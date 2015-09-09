@@ -62,7 +62,7 @@ public class CaServer {
     private void sendUserList(){
         String users = "";
         for(String user : clients.keySet()){
-            users+= users+"," + user;
+            users = users+"," + user;
             
         }
         String fullInfo = "USERLIST#" + users;
