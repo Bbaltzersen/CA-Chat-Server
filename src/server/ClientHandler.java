@@ -46,10 +46,23 @@ public class ClientHandler extends Thread {
 //                users.put(parts[0], parts[1]);
                 System.out.println("User from if : " + parts[1]);
                 
-                server.addUser(parts[1], socket);
-            }else{
+//                server.addUser(parts[1], socket);
+            }
+            if(parts[0].equals("MSG")){
+                send(parts[1]);
+            }
+            else{
                 System.out.println("Apenado senior, no es un User!");
             }
         }
+    }
+
+    public String getUsername() {
+        return username;
+    }
+    public void send(String msg){
+        
+                 pw.println(msg);
+
     }
 }

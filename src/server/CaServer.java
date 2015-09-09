@@ -5,6 +5,8 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,7 +16,7 @@ public class CaServer {
     private String nUser;
     Scanner sc;
 
-    HashMap<String, Socket> clients = new HashMap();
+    HashMap<String, ClientHandler> clients = new HashMap();
 
     public static void main(String[] args) {
         CaServer caserver = new CaServer();
@@ -35,16 +37,28 @@ public class CaServer {
 
             System.out.println("Connection established");
             ch.start();
-
+            nUser = ch.getUsername();
+            addUser(nUser, ch);
         }
     }
 
-    public void removeUser(String user, Socket socket) {
-        clients.remove(user, socket);
+    public void removeUser(String user, ClientHandler ch) {
+        clients.remove(user, ch);
     }
 
-    public void addUser(String user, Socket socket) {
-        clients.put(nUser, socket);
-        System.out.println(clients.toString());
+    public void addUser(String user, ClientHandler ch) {
+        clients.put(nUser, ch);
+        System.out.println("From clients:  " + clients.toString());
+    }
+
+    public void sendtoAll(String msg) {
+        Iterator it = clients.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
+            ClientHandler temp = (ClientHandler) pair.getValue();
+            temp.send(msg);
+
+        }
+
     }
 }
