@@ -33,12 +33,14 @@ public class CaServer {
 
         while (true) {
             Socket connection = server.accept();
+            sc = new Scanner(connection.getInputStream());
+            String uname = sc.nextLine();
+            System.out.println(uname);
             ClientHandler ch = new ClientHandler(connection);
 
             System.out.println("Connection established");
             ch.start();
             nUser = ch.getUsername();
-            addUser(nUser, ch);
         }
     }
 
@@ -46,10 +48,11 @@ public class CaServer {
         clients.remove(user, ch);
     }
 
-    public void addUser(String user, ClientHandler ch) {
-        clients.put(nUser, ch);
-        System.out.println("From clients:  " + clients.toString());
-    }
+//    public void addUser(String user, Socket socket) throws IOException {
+//        ClientHandler clientH = new ClientHandler(socket);
+//        clients.put(nUser, clientH);
+//        System.out.println("From clients:  " + clients.toString());
+//    }
 
     public void sendtoAll(String msg) {
         Iterator it = clients.entrySet().iterator();

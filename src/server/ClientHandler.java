@@ -30,10 +30,10 @@ public class ClientHandler extends Thread {
     @Override
     public void run() {
         boolean connected = true;
+        String name;
         while (connected) {
         String input = sc.nextLine();
         String[] parts = input.split("#");
-            System.out.println("User " + parts[0] + "Username" + parts[1]);
         if (!parts[0].equals("USER")) {
             try {
                 socket.close(); // closing the connection
@@ -44,9 +44,14 @@ public class ClientHandler extends Thread {
             if (parts[0].equals("USER")) {
 //                users = new HashMap();
 //                users.put(parts[0], parts[1]);
-                System.out.println("User from if : " + parts[1]);
-                
+                System.out.println(this.toString() + " <---- This");
+                name = parts[1];
+//                try {
 //                server.addUser(parts[1], socket);
+//                }
+//                catch (Exception e) {
+//                    System.out.println("Error");
+//                }
             }
             if(parts[0].equals("MSG")){
                 send(parts[1]);
