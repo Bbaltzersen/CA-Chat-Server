@@ -37,10 +37,15 @@ public class ClientHandler extends Thread {
         String name;
         String input = sc.nextLine();
         parts = input.split("#");
-        String uname = parts[1];
+        
         if (!parts[0].equals("USER")) {
-            //close connection
+            try {
+                socket.close();
+            } catch (IOException ex) {
+                Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+        String uname = parts[1];
         if (parts[0].equals("USER")) {
 
             username = parts[1];
@@ -64,8 +69,8 @@ public class ClientHandler extends Thread {
             if (parts[0].equals("MSG") && parts[1].equals(uname)) {
                 String msg = "MSG#" + parts[1] + "#" + parts[2];
                 server.sendtoAll(msg);
-            parts = null;
             }
+
             if (parts[0].equals("MSG") && !parts[1].equals(uname)) {
                 String recievers = parts[1];
                 System.out.println(recievers);
@@ -73,13 +78,10 @@ public class ClientHandler extends Thread {
                 System.out.println(Arrays.toString(recS));
                 String msg = "MSG#" + uname + "#" + parts[2];
                 server.sendSpecific(msg, recS);
-                parts = null;
             }
             
         }
 
-        input = "";
-        parts = null;
     }
 
     public void endConnection() throws IOException {

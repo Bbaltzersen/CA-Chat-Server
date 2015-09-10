@@ -60,6 +60,8 @@ public class CaServer {
     
     public void sendSpecific(String msg, String[] recievers) {
         ClientHandler ch;
+        System.out.println(msg);
+        System.out.println(recievers[0]);
         int i;
         if(recievers[0].equals("*")) {
             for(ClientHandler handler : clients.values()){
@@ -67,7 +69,7 @@ public class CaServer {
             }
         }
         else {
-        System.out.println(recievers.length);
+        System.out.println(recievers.length + "HERE");
         for(i = 0; i < recievers.length; i++) {
             ch = clients.get(recievers[i]);
             ch.send(msg);
