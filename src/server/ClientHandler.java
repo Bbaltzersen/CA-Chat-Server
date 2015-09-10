@@ -62,8 +62,8 @@ public class ClientHandler extends Thread {
                     break;
             }
             if (parts[0].equals("MSG") && parts[1].equals(uname)) {
-//                send();
-                pw.println("This is where you should send a message");
+                String msg = "MSG#" + parts[1] + "#" + parts[2];
+                server.sendtoAll(msg);
             parts = null;
             }
             if (parts[0].equals("MSG") && !parts[1].equals(uname)) {

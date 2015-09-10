@@ -52,12 +52,8 @@ public class CaServer {
 //    }
 
     public void sendtoAll(String msg) {
-        Iterator it = clients.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry) it.next();
-            ClientHandler temp = (ClientHandler) pair.getValue();
-            temp.send(msg);
-
+        for(ClientHandler handler : clients.values()){
+            handler.send(msg);
         }
 
     }
@@ -65,11 +61,18 @@ public class CaServer {
     public void sendSpecific(String msg, String[] recievers) {
         ClientHandler ch;
         int i;
+        if(recievers[0].equals("*")) {
+            for(ClientHandler handler : clients.values()){
+            handler.send(msg);
+            }
+        }
+        else {
         System.out.println(recievers.length);
         for(i = 0; i < recievers.length; i++) {
             ch = clients.get(recievers[i]);
             ch.send(msg);
-        } 
+        }
+        }
         
     }
     
