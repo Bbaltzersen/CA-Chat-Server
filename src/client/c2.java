@@ -60,6 +60,7 @@ public class c2 {
             System.out.print ("input: ");
 	}
 
+        System.out.println("Lol");
         out.close();
         in.close();
         echoSocket.close();

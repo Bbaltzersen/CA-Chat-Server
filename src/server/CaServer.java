@@ -61,6 +61,18 @@ public class CaServer {
         }
 
     }
+    
+    public void sendSpecific(String msg, String[] recievers) {
+        ClientHandler ch;
+        int i;
+        System.out.println(recievers.length);
+        for(i = 0; i < recievers.length; i++) {
+            ch = clients.get(recievers[i]);
+            ch.send(msg);
+        } 
+        
+    }
+    
     private void sendUserList(){
         String users = "";
         for(String user : clients.keySet()){
