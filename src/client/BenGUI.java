@@ -172,6 +172,7 @@ public class BenGUI extends javax.swing.JFrame implements Observer{
     private void connectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectActionPerformed
         // TODO add your handling code here:
         String newUser = user.getText();
+        
         System.out.println(newUser);
      try {
          echo.connect("localhost",7777,newUser,this);
@@ -250,6 +251,7 @@ public class BenGUI extends javax.swing.JFrame implements Observer{
     public void update(Observable o, Object arg) {
         chatField.append((String) arg + "\n");
         String[] userList = echo.getList();
+        model.removeAllElements();
         for (String uname : userList) {
          model.addElement(uname);
          jList1.setSelectedIndex(0);
