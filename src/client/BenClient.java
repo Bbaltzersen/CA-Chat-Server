@@ -46,7 +46,7 @@ public class BenClient extends Observable implements Runnable {
     public void run() {
         output.println("USER#" + this.user);
         String parts[];
-        
+       
         
         try {
             while ((incoming = input.readLine()) != null) {
@@ -59,7 +59,7 @@ public class BenClient extends Observable implements Runnable {
                     setChanged();
                     notifyObservers(incoming);
                 }
-                if (incoming.contains("MSG#")) {
+                if (parts[0].equals("MSG")) {
                     msgRecieve = incoming;
                     System.out.println("received message");
                     setChanged();
@@ -87,6 +87,7 @@ public class BenClient extends Observable implements Runnable {
     }
 
     public void send(String msg) {
+        System.out.println("Send method: " + msg);
         output.println();
     }
 

@@ -56,6 +56,7 @@ public class ClientHandler extends Thread {
         while (connected) {
             System.out.println(username);
             input = sc.nextLine();
+            System.out.println("In while loop: " + input);
             parts = input.split("#");
 
             if (parts[0].equals("STOP")) {

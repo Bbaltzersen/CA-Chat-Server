@@ -164,7 +164,8 @@ public class BenGUI extends javax.swing.JFrame implements Observer {
         // TODO add your handling code here:
 
         String msg = sendMessage.getText();
-        echo.send(msg);
+        System.out.println("Message at send:  " + msg );
+        echo.send("MSG#" + "ben#" +msg);
 
     }//GEN-LAST:event_sendActionPerformed
 
@@ -248,8 +249,13 @@ public class BenGUI extends javax.swing.JFrame implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
+
         try {
-            chatField.append(echo.recieve() + "\n");
+            String message = echo.recieve();
+            if (message != null) {
+
+                chatField.append(echo.recieve() + "\n");
+            }
         } catch (IOException ex) {
             Logger.getLogger(BenGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
