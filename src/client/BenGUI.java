@@ -157,11 +157,11 @@ public class BenGUI extends javax.swing.JFrame implements Observer{
         String newUser = user.getText();
         System.out.println(newUser);
      try {
-         echo.connect("localhost",7777,newUser);
+         echo.connect("localhost",7777,newUser,this);
      } catch (IOException ex) {
          Logger.getLogger(BenGUI.class.getName()).log(Level.SEVERE, null, ex);
      }
-   users.setText(echo.getList());
+//   users.setText(echo.getList());
     }//GEN-LAST:event_connectActionPerformed
 
     private void disconnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_disconnectActionPerformed
@@ -233,6 +233,8 @@ public class BenGUI extends javax.swing.JFrame implements Observer{
     @Override
     public void update(Observable o, Object arg) {
         receiveMessage.setText((String) arg);
+           users.setText(echo.getList());
+
     }
 
 }
