@@ -22,7 +22,8 @@ public class CaServer {
     public static void main(String[] args) {
         CaServer caserver = new CaServer();
         try {
-            caserver.handleClient("10.77.20.55", 7777);
+//            caserver.handleClient("10.77.20.55", 7777);
+            caserver.handleClient("localhost", 7777);
         } catch (IOException ex) {
             Logger.getLogger(CaServer.class.getName()).log(Level.SEVERE, null, ex);
         }
