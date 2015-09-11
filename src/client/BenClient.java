@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 public class BenClient extends Observable implements Runnable {
 
     String user;
-    String users;
+    String[] sUsers;
     String sender;
     String message;
     String incoming;
@@ -54,7 +54,8 @@ public class BenClient extends Observable implements Runnable {
                 parts = incoming.split("#");
                 if (parts[0].equals("USERLIST")) {
                     System.out.println("received userlist");
-                    users = parts[1];//.split(",");
+                    String users = parts[1];//.split(",");
+                    sUsers = users.split(",");
                     setChanged();
                     notifyObservers(incoming);
                 }
@@ -82,8 +83,8 @@ public class BenClient extends Observable implements Runnable {
 
     }
 
-    public String getList() {
-        return users;
+    public String[] getList() {
+        return sUsers;
     }
 
     public void send(String msg) {
