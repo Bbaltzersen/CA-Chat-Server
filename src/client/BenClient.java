@@ -47,7 +47,8 @@ public class BenClient extends Observable implements Runnable {
     public void run() {
         output.println("USER#" + this.user);
         String parts[];
-            
+        
+        
         try {
             while ((incoming = input.readLine()) != null) {
                 System.out.println("Received this:" + incoming);
