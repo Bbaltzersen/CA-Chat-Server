@@ -22,14 +22,13 @@ import javax.swing.text.DefaultCaret;
  *
  * @author Ben
  */
-public class BenGUI extends javax.swing.JFrame implements Observer{
- private PrintWriter out;
- DefaultListModel model = new DefaultListModel();
- 
+public class BenGUI extends javax.swing.JFrame implements Observer {
 
- 
- 
+    private PrintWriter out;
+    DefaultListModel model = new DefaultListModel();
+
     BenClient echo;
+
     public BenGUI() throws IOException {
         initComponents();
         DefaultCaret caret = (DefaultCaret) chatField.getCaret();
@@ -163,24 +162,24 @@ public class BenGUI extends javax.swing.JFrame implements Observer{
 
     private void sendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendActionPerformed
         // TODO add your handling code here:
-        
+
         String msg = sendMessage.getText();
         echo.send(msg);
-        
+
     }//GEN-LAST:event_sendActionPerformed
 
     private void connectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectActionPerformed
         // TODO add your handling code here:
         String newUser = user.getText();
-        
+
         System.out.println(newUser);
-     try {
-         echo.connect("localhost",7777,newUser,this);
-     } catch (IOException ex) {
-         Logger.getLogger(BenGUI.class.getName()).log(Level.SEVERE, null, ex);
-     }
-   
-    
+        try {
+            echo.connect("localhost", 7777, newUser, this);
+        } catch (IOException ex) {
+            Logger.getLogger(BenGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
     }//GEN-LAST:event_connectActionPerformed
 
     private void disconnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_disconnectActionPerformed
@@ -249,16 +248,17 @@ public class BenGUI extends javax.swing.JFrame implements Observer{
 
     @Override
     public void update(Observable o, Object arg) {
-        chatField.append((String) arg + "\n");
+        try {
+            chatField.append(echo.recieve() + "\n");
+        } catch (IOException ex) {
+            Logger.getLogger(BenGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
         String[] userList = echo.getList();
         model.removeAllElements();
         for (String uname : userList) {
-         model.addElement(uname);
-         jList1.setSelectedIndex(0);
+            model.addElement(uname);
+            jList1.setSelectedIndex(0);
         }
-     }
-          
-
     }
 
-
+}

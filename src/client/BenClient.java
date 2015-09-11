@@ -24,8 +24,7 @@ public class BenClient extends Observable implements Runnable {
 
     String user;
     String[] sUsers;
-    String sender;
-    String message;
+    String msgRecieve;
     String incoming;
 
     private Socket socket;
@@ -60,9 +59,8 @@ public class BenClient extends Observable implements Runnable {
                     setChanged();
                     notifyObservers(incoming);
                 }
-                if (parts[0].equals("MSG")) {
-                    sender = parts[1];
-                    message = parts[2];
+                if (incoming.contains("MSG#")) {
+                    msgRecieve = incoming;
                     System.out.println("received message");
                     setChanged();
                     notifyObservers(incoming);
@@ -89,16 +87,16 @@ public class BenClient extends Observable implements Runnable {
     }
 
     public void send(String msg) {
-        output.println(msg);
+        output.println();
     }
 
     public void close() {
         output.println("STOP#");
     }
 
-    public void recieve(String msg) throws IOException {
+    public String recieve() throws IOException {
 
-        output.println(msg);
+        return msgRecieve;
     }
 
 }
