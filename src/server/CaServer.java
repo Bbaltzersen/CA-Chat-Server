@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,7 +22,7 @@ public class CaServer {
     public static void main(String[] args) {
         CaServer caserver = new CaServer();
         try {
-            caserver.handleClient("localhost", 7777);
+            caserver.handleClient("10.77.20.55", 7777);
         } catch (IOException ex) {
             Logger.getLogger(CaServer.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -40,16 +41,11 @@ public class CaServer {
     }
 
     public void removeUser(String user, ClientHandler ch) {
-        System.out.println("Clients before erase : " + clients.toString());
         clients.remove(user, ch);
-        System.out.println("Clients after erase : " +clients.toString());
+        for(ClientHandler handler : clients.values()){
+            handler.send(user + " disconnected from server.");
+        }
     }
-
-//    public void addUser(String user, Socket socket) throws IOException {
-//        ClientHandler clientH = new ClientHandler(socket);
-//        clients.put(nUser, clientH);
-//        System.out.println("From clients:  " + clients.toString());
-//    }
 
     public void sendtoAll(String msg) {
         for(ClientHandler handler : clients.values()){
@@ -60,8 +56,6 @@ public class CaServer {
     
     public void sendSpecific(String msg, String[] recievers) {
         ClientHandler ch;
-        System.out.println(msg);
-        System.out.println(recievers[0]);
         int i;
         if(recievers[0].equals("*")) {
             for(ClientHandler handler : clients.values()){
@@ -69,10 +63,14 @@ public class CaServer {
             }
         }
         else {
-        System.out.println(recievers.length + "HERE");
         for(i = 0; i < recievers.length; i++) {
+            try {
             ch = clients.get(recievers[i]);
             ch.send(msg);
+            }
+            catch(Exception e) {
+                System.out.println("Error");
+            }
         }
         }
         

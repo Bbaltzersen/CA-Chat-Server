@@ -52,7 +52,9 @@ public class ClientHandler extends Thread {
             server.addClientHandler(username, this);
         }
         parts = null;
+        
         while (connected) {
+            System.out.println(username);
             input = sc.nextLine();
             parts = input.split("#");
 
@@ -63,23 +65,20 @@ public class ClientHandler extends Thread {
                     Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 pw.println("You're logged off loser!!");
-            parts = null;
-                    break;
+                parts = null;
+                break;
             }
-            if (parts[0].equals("MSG") && parts[1].equals(uname)) {
-                String msg = "MSG#" + parts[1] + "#" + parts[2];
+            if (parts[0].equals("MSG") && parts[1].equals(username)) {
+                String msg = "MSG#" + username + "#" + parts[2];
                 server.sendtoAll(msg);
             }
-
-            if (parts[0].equals("MSG") && !parts[1].equals(uname)) {
+            if (parts[0].equals("MSG") && !parts[1].equals(username)) {
                 String recievers = parts[1];
-                System.out.println(recievers);
                 String[] recS = recievers.split(",");
-                System.out.println(Arrays.toString(recS));
-                String msg = "MSG#" + uname + "#" + parts[2];
+                String msg = "MSG#" + username + "#" + parts[2];
                 server.sendSpecific(msg, recS);
             }
-            
+        
         }
 
     }
@@ -93,7 +92,7 @@ public class ClientHandler extends Thread {
         return username;
     }
 
-    public void send(String msg) {
+    public synchronized void send(String msg) {
 
         pw.println(msg);
 
