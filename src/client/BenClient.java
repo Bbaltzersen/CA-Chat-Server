@@ -88,7 +88,9 @@ public class BenClient extends Observable implements Runnable {
 
     public void send(String msg) {
         System.out.println("Send method: " + msg);
-        output.println();
+        if(msg != null) {
+        output.println(msg);
+        }
     }
 
     public void close() {

@@ -37,7 +37,7 @@ public class ClientHandler extends Thread {
         String name;
         String input = sc.nextLine();
         parts = input.split("#");
-        
+
         if (!parts[0].equals("USER")) {
             try {
                 socket.close();
@@ -47,12 +47,11 @@ public class ClientHandler extends Thread {
         }
         String uname = parts[1];
         if (parts[0].equals("USER")) {
-
             username = parts[1];
             server.addClientHandler(username, this);
         }
         parts = null;
-        
+
         while (connected) {
             System.out.println(username);
             input = sc.nextLine();
@@ -69,17 +68,13 @@ public class ClientHandler extends Thread {
                 parts = null;
                 break;
             }
-            if (parts[0].equals("MSG") && parts[1].equals(username)) {
-                String msg = "MSG#" + username + "#" + parts[2];
-                server.sendtoAll(msg);
-            }
             if (parts[0].equals("MSG") && !parts[1].equals(username)) {
                 String recievers = parts[1];
                 String[] recS = recievers.split(",");
                 String msg = "MSG#" + username + "#" + parts[2];
                 server.sendSpecific(msg, recS);
             }
-        
+
         }
 
     }
@@ -94,8 +89,6 @@ public class ClientHandler extends Thread {
     }
 
     public synchronized void send(String msg) {
-
         pw.println(msg);
-
     }
 }

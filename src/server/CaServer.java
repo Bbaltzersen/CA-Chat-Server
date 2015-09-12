@@ -37,60 +37,54 @@ public class CaServer {
             Socket connection = server.accept();
             ClientHandler c = new ClientHandler(connection, this);
             c.start();
-            
+
         }
     }
 
     public void removeUser(String user, ClientHandler ch) {
         clients.remove(user, ch);
-        for(ClientHandler handler : clients.values()){
+        for (ClientHandler handler : clients.values()) {
             handler.send(user + " disconnected from server.");
         }
     }
 
-    public void sendtoAll(String msg) {
-        for(ClientHandler handler : clients.values()){
-            handler.send(msg);
-        }
-
-    }
-    
     public void sendSpecific(String msg, String[] recievers) {
         ClientHandler ch;
         int i;
-        if(recievers[0].equals("*")) {
-            for(ClientHandler handler : clients.values()){
-            handler.send(msg);
+        if (recievers[0].equals("*")) {
+            for (ClientHandler handler : clients.values()) {
+                handler.send(msg);
+            }
+        } else {
+            for (i = 0; i < recievers.length; i++) {
+                try {
+                    ch = clients.get(recievers[i]);
+                    ch.send(msg);
+                } catch (Exception e) {
+                    System.out.println("Error");
+                }
             }
         }
-        else {
-        for(i = 0; i < recievers.length; i++) {
-            try {
-            ch = clients.get(recievers[i]);
-            ch.send(msg);
-            }
-            catch(Exception e) {
-                System.out.println("Error");
-            }
-        }
-        }
-        
+
     }
-    
-    private void sendUserList(){
+
+    private void sendUserList() {
         String users = "";
-        for(String user : clients.keySet()){
-            users = users+"," + user;
+        for (String user : clients.keySet()) {
+            users = users + "," + user;
             
+
         }
+        users = users.substring(1);
         String fullInfo = "USERLIST#" + users;
-        for(ClientHandler handler : clients.values()){
+        for (ClientHandler handler : clients.values()) {
             handler.send(fullInfo);
         }
     }
-    public void addClientHandler(String username, ClientHandler ch){
+
+    public void addClientHandler(String username, ClientHandler ch) {
         clients.put(username, ch);
         sendUserList();
-        
+
     }
 }
