@@ -35,6 +35,7 @@ public class BenGUI extends javax.swing.JFrame implements Observer {
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
         chatField.setCaretPosition(chatField.getText().length());
         jList1.setModel(model);
+        
         echo = new BenClient();
 //        echo.connect("localhost", 9090,this,user);
     }
@@ -95,6 +96,9 @@ public class BenGUI extends javax.swing.JFrame implements Observer {
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
+        jList1.setToolTipText("");
+        jList1.setSelectedIndex(0);
+        jList1.setVerifyInputWhenFocusTarget(false);
         jScrollPane1.setViewportView(jList1);
 
         chatField.setEditable(false);
@@ -127,10 +131,11 @@ public class BenGUI extends javax.swing.JFrame implements Observer {
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(send)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(sendMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(sendMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12)))
                 .addGap(24, 24, 24))
         );
         layout.setVerticalGroup(
@@ -239,7 +244,7 @@ public class BenGUI extends javax.swing.JFrame implements Observer {
     private javax.swing.JButton connect;
     private javax.swing.JButton disconnect;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JList jList1;
+    javax.swing.JList jList1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton send;

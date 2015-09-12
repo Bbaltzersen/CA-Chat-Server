@@ -72,7 +72,6 @@ public class CaServer {
         String users = "";
         for (String user : clients.keySet()) {
             users = users + "," + user;
-            
 
         }
         users = users.substring(1);
