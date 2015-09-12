@@ -32,7 +32,7 @@ public class CaServer {
     public void handleClient(String ip, int port) throws IOException {
         ServerSocket server = new ServerSocket();
         server.bind(new InetSocketAddress(ip, port));
-
+        
         while (true) {
             Socket connection = server.accept();
             ClientHandler c = new ClientHandler(connection, this);
