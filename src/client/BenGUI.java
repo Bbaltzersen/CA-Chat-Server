@@ -35,7 +35,8 @@ public class BenGUI extends javax.swing.JFrame implements Observer {
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
         chatField.setCaretPosition(chatField.getText().length());
         jList1.setModel(model);
-        
+        send.setEnabled(false);
+        disconnect.setEnabled(false);
         echo = new BenClient();
 //        echo.connect("localhost", 9090,this,user);
     }
@@ -184,7 +185,9 @@ public class BenGUI extends javax.swing.JFrame implements Observer {
         } catch (IOException ex) {
             Logger.getLogger(BenGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+      connect.setEnabled(false);
+      send.setEnabled(true);
+      disconnect.setEnabled(true);
 
     }//GEN-LAST:event_connectActionPerformed
 
