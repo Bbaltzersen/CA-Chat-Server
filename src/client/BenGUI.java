@@ -170,7 +170,7 @@ public class BenGUI extends javax.swing.JFrame implements Observer {
 
         String msg = sendMessage.getText();
         System.out.println("Message at send:  " + msg );
-        echo.send("MSG#" + "ben#" +msg);
+        echo.send("MSG#" + "*#" +msg);
 
     }//GEN-LAST:event_sendActionPerformed
 
