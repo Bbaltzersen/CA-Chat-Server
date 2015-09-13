@@ -5,6 +5,7 @@
  */
 package client;
 
+import com.sun.xml.internal.ws.util.StringUtils;
 import java.awt.Dimension;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -165,19 +166,24 @@ public class BenGUI extends javax.swing.JFrame implements Observer {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
-    
+
     private void sendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendActionPerformed
         // TODO add your handling code here:
-       
+
         String msg = sendMessage.getText();
-        if(msg.contains("#")) {
-            String[] parts = msg.split("#");
-            echo.send(ProtocolStrings.MSG + msg);
-            chatField.append("To "+parts[0]+": "+parts[1]+"\n");
-        }
-        else {
-        echo.send(ProtocolStrings.MSG + "*#" +msg);
+        int occurance;
+        int count = msg.length() - msg.replace("#", "").length();
+        System.out.println(count);
+        if (count <= 1) {
+            if (msg.contains("#")) {
+                String[] parts = msg.split("#");
+                echo.send(ProtocolStrings.MSG + msg);
+                chatField.append("To " + parts[0] + ": " + parts[1] + "\n");
+            } else {
+                echo.send(ProtocolStrings.MSG + "*#" + msg);
+            }
+        } else {
+            sendMessage.setText("the message can't include more than #");
         }
 
     }//GEN-LAST:event_sendActionPerformed
@@ -192,11 +198,11 @@ public class BenGUI extends javax.swing.JFrame implements Observer {
         } catch (IOException ex) {
             Logger.getLogger(BenGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-      chatField.setText("Connected. \n");
-      connect.setEnabled(false);
-      user.setEditable(false);
-      send.setEnabled(true);
-      disconnect.setEnabled(true);
+        chatField.setText("Connected. \n");
+        connect.setEnabled(false);
+        user.setEditable(false);
+        send.setEnabled(true);
+        disconnect.setEnabled(true);
 
     }//GEN-LAST:event_connectActionPerformed
 

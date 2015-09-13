@@ -30,7 +30,7 @@ public class BenClientTest implements Observer {
      * Test of connect method, of class BenClient.
      */
     @BeforeClass
-  public static void setUpClass() {
+  public synchronized static void setUpClass() {
     new Thread(new Runnable(){
       @Override
       public void run() {
@@ -39,10 +39,11 @@ public class BenClientTest implements Observer {
     }).start();
   }
     @Test
-    public void testConnect() throws Exception {
+    public synchronized void testConnect() throws Exception {
        BenClient client = new BenClient();
        client.connect("localhost",7777,"Test1",this);
        assertEquals(true, client.user.equals("Test1"));
+       client.close();
     }
 
     /**
@@ -61,7 +62,7 @@ public class BenClientTest implements Observer {
     public void testGetList() throws IOException {
         System.out.println("getList");
         BenClient instance = new BenClient();
-        instance.connect("localhost",7777,"Test4",this);
+        instance.connect("localhost",7777,"Test1",this);
         String[] expResult = instance.sUsers ;
         
         String[] result = instance.getList();
@@ -72,15 +73,15 @@ public class BenClientTest implements Observer {
      * Test of send method, of class BenClient.
      */
     @Test
-    public void testSend() throws Exception {
+    public synchronized void testSend() throws Exception {
         System.out.println("send");
             String msg = "MSG#Test2#Hello";
           BenClient client2 = new BenClient();
           BenClient client3= new BenClient();
-    client2.connect("localhost",7777,"Test2",this);
-    client3.connect("localhost",7777,"Test3",this);
-        client3.send(msg);
-        assertEquals(msg, client2.recieve());
+          client2.connect("localhost",7777,"Test1",this);
+          client3.connect("localhost",7777,"Test2",this);
+          client3.send(msg);
+          assertEquals(msg, client2.incoming);
         // TODO review the generated test code and remove the default call to fail.
     }
 
@@ -88,34 +89,36 @@ public class BenClientTest implements Observer {
      * Test of close method, of class BenClient.
      */
     @Test
-    public void testClose() throws IOException {
+    public synchronized void testClose() throws IOException {
         System.out.println("close");
        BenClient client = new BenClient();
        client.connect("localhost",7777,"Test1",this);
        client.close();
         assertEquals(client, this);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
     }
 
     /**
      * Test of recieve method, of class BenClient.
      */
     @Test
-    public void testRecieve() throws Exception {
+    public synchronized void testRecieve() throws Exception {
            System.out.println("send");
             String msg = "USERLIST#Test2,Test3";
           BenClient client2 = new BenClient();
           BenClient client3= new BenClient();
-    client2.connect("localhost",7777,"Test2",this);
-    client3.connect("localhost",7777,"Test3",this);
-        
-        assertThat((client3.recieve()), is("USERLIST#Test2,Test3"));
+          client2.connect("localhost",7777,"Test1",this);
+          client3.connect("localhost",7777,"Test2",this);
+         
+           assertThat((client3.recieve()), is("USERLIST#Test1,Test2"));
+          client2.close();
+          client3.close();
     }
 
     @Override
     public void update(Observable o, Object arg) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
     
 }

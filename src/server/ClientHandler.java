@@ -24,7 +24,7 @@ public class ClientHandler extends Thread {
     Scanner sc;
 //    Map users;
 
-    ClientHandler(Socket socket, CaServer s) throws IOException {
+    public ClientHandler(Socket socket, CaServer s) throws IOException {
         this.server = s;
         this.socket = socket;
         pw = new PrintWriter(socket.getOutputStream(), true);
@@ -45,14 +45,11 @@ public class ClientHandler extends Thread {
                 Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        String uname = parts[1];
         if (input.startsWith(ProtocolStrings.USER)) {
-            input = null;
             username = parts[1];
             server.addClientHandler(username, this);
         }
-        parts = null;
-
+ 
         while (sc.hasNextLine()) {
             
             System.out.println(username);
@@ -101,7 +98,7 @@ public class ClientHandler extends Thread {
         return username;
     }
 
-    public synchronized void send(String msg) {
+    public void send(String msg) {
         pw.println(msg);
     }
 }

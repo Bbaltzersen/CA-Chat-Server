@@ -44,16 +44,20 @@ public class BenClient extends Observable implements Runnable {
     }
 
     @Override
-    public void run() {
+    public  void run() {
+        
         output.println(ProtocolStrings.USER + this.user);
+        
         String parts[];
        
         
         try {
+            
             while ((incoming = input.readLine()) != null) {
+                System.out.println(incoming);
                 System.out.println("Received this:" + incoming);
                 parts = incoming.split("#");
-                if (incoming.startsWith(ProtocolStrings.USERLIST)) {
+                if (incoming.startsWith(ProtocolStrings.USERLIST)) {  // compares the ingoing line with the protocol
                     System.out.println("received userlist");
                     String users = parts[1];//.split(",");
                     sUsers = users.split(",");
@@ -71,7 +75,6 @@ public class BenClient extends Observable implements Runnable {
                 }
                 if (incoming.startsWith(ProtocolStrings.STOP)) {
                     close();
-                    System.out.println("received stop");
                     setChanged();
                     notifyObservers(incoming);
                 }
@@ -86,13 +89,15 @@ public class BenClient extends Observable implements Runnable {
 
     }
 
+    
     public String[] getList() {
+        System.out.println("here");
         return sUsers;
     }
 
     public void send(String msg) {
         System.out.println("Send method: " + msg);
-        
+        System.out.println(msg + "WHY!!!");
         if(msg != null) {
         output.println(msg);
         }
