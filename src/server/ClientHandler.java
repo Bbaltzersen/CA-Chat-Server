@@ -32,7 +32,6 @@ public class ClientHandler extends Thread {
 
     @Override
     public void run() {
-        boolean connected = true;
         String parts[];
         String name;
         String input = sc.nextLine();
@@ -52,7 +51,7 @@ public class ClientHandler extends Thread {
         }
         parts = null;
 
-        while (connected) {
+        while (sc.hasNextLine()) {
             System.out.println(username);
             input = sc.nextLine();
             System.out.println("In while loop: " + input);
@@ -69,12 +68,21 @@ public class ClientHandler extends Thread {
                 break;
             }
             if (parts[0].equals("MSG") && !parts[1].equals(username)) {
-                String recievers = parts[1];
-                String[] recS = recievers.split(",");
-                String msg = "MSG#" + username + "#" + parts[2];
-                server.sendSpecific(msg, recS);
+                if (parts[2] == null) {
+                    System.out.println("");
+                } else {
+                    String recievers = parts[1];
+                    String[] recS = recievers.split(",");
+                    String msg = "MSG#" + username + "#" + parts[2];
+                    server.sendSpecific(msg, recS);
+                }
             }
 
+        }
+        try {
+            endConnection();
+        } catch (IOException ex) {
+            Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }

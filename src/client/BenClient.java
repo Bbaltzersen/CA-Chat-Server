@@ -60,8 +60,12 @@ public class BenClient extends Observable implements Runnable {
                     notifyObservers(incoming);
                 }
                 if (parts[0].equals("MSG")) {
-                    msgRecieve = incoming;
+                    parts = null;
+                    parts = incoming.split("#");
+                    String juMsg = parts[1] + ": " + parts[2];
+                    msgRecieve = juMsg;
                     System.out.println("received message");
+                    
                     setChanged();
                     notifyObservers(incoming);
                 }
@@ -98,7 +102,6 @@ public class BenClient extends Observable implements Runnable {
     }
 
     public String recieve() throws IOException {
-
         return msgRecieve;
     }
 

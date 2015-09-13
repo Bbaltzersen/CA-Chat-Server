@@ -37,8 +37,8 @@ public class BenClientTest implements Observer {
     @Test
     public void testConnect() throws Exception {
        BenClient client = new BenClient();
-    client.connect("localhost",7777,"Test1",this);
-        assertEquals(true, client.user.equals("Test1"));
+       client.connect("localhost",7777,"Test1",this);
+       assertEquals(true, client.user.equals("Test1"));
     }
 
     /**
@@ -77,7 +77,7 @@ public class BenClientTest implements Observer {
         String msg = "MSG#Test2#Hello";
         client.send(msg);
         
-        assertEquals(true, ch.);
+        assertEquals(expResult, ch.);
         // TODO review the generated test code and remove the default call to fail.
     }
 

@@ -41,13 +41,6 @@ public class CaServer {
         }
     }
 
-    public void removeUser(String user, ClientHandler ch) {
-        clients.remove(user, ch);
-        for (ClientHandler handler : clients.values()) {
-            handler.send(user + " disconnected from server.");
-        }
-    }
-
     public void sendSpecific(String msg, String[] recievers) {
         ClientHandler ch;
         int i;
@@ -70,6 +63,7 @@ public class CaServer {
 
     private void sendUserList() {
         String users = "";
+        if(users.equals("")) {
         for (String user : clients.keySet()) {
             users = users + "," + user;
 
@@ -79,11 +73,16 @@ public class CaServer {
         for (ClientHandler handler : clients.values()) {
             handler.send(fullInfo);
         }
+        }
     }
 
     public void addClientHandler(String username, ClientHandler ch) {
         clients.put(username, ch);
         sendUserList();
-
+    }
+    
+    public void removeUser(String user, ClientHandler ch) {
+        clients.remove(user, ch);
+        sendUserList();
     }
 }
