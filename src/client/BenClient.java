@@ -15,6 +15,7 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import shared.ProtocolStrings;
 
 /**
  *
@@ -44,7 +45,7 @@ public class BenClient extends Observable implements Runnable {
 
     @Override
     public void run() {
-        output.println("USER#" + this.user);
+        output.println(ProtocolStrings.USER + this.user);
         String parts[];
        
         
@@ -52,24 +53,23 @@ public class BenClient extends Observable implements Runnable {
             while ((incoming = input.readLine()) != null) {
                 System.out.println("Received this:" + incoming);
                 parts = incoming.split("#");
-                if (parts[0].equals("USERLIST")) {
+                if (incoming.startsWith(ProtocolStrings.USERLIST)) {
                     System.out.println("received userlist");
                     String users = parts[1];//.split(",");
                     sUsers = users.split(",");
                     setChanged();
                     notifyObservers(incoming);
                 }
-                if (parts[0].equals("MSG")) {
+                if (incoming.startsWith(ProtocolStrings.MSG)) {
                     parts = null;
                     parts = incoming.split("#");
                     String juMsg = parts[1] + ": " + parts[2];
                     msgRecieve = juMsg;
-                    System.out.println("received message");
-                    
                     setChanged();
                     notifyObservers(incoming);
+                    msgRecieve = null;
                 }
-                if (parts[0].equals("STOP")) {
+                if (incoming.startsWith(ProtocolStrings.STOP)) {
                     close();
                     System.out.println("received stop");
                     setChanged();
@@ -92,13 +92,14 @@ public class BenClient extends Observable implements Runnable {
 
     public void send(String msg) {
         System.out.println("Send method: " + msg);
+        
         if(msg != null) {
         output.println(msg);
         }
     }
 
     public void close() {
-        output.println("STOP#");
+        output.println(ProtocolStrings.STOP);
     }
 
     public String recieve() throws IOException {

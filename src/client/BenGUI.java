@@ -17,6 +17,7 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.text.DefaultCaret;
+import shared.ProtocolStrings;
 
 /**
  *
@@ -116,11 +117,11 @@ public class BenGUI extends javax.swing.JFrame implements Observer {
                 .addGap(0, 13, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 16, Short.MAX_VALUE)
+                        .addGap(0, 4, Short.MAX_VALUE)
                         .addComponent(send)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(sendMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(36, 36, 36))
+                        .addGap(48, 48, 48))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
@@ -170,9 +171,14 @@ public class BenGUI extends javax.swing.JFrame implements Observer {
         // TODO add your handling code here:
        
         String msg = sendMessage.getText();
-        
-        System.out.println("Message at send:  " + msg );
-        echo.send("MSG#" + "*#" +msg);
+        if(msg.contains("#")) {
+            String[] parts = msg.split("#");
+            echo.send(ProtocolStrings.MSG + msg);
+            chatField.append("To "+parts[0]+": "+parts[1]+"\n");
+        }
+        else {
+        echo.send(ProtocolStrings.MSG + "*#" +msg);
+        }
 
     }//GEN-LAST:event_sendActionPerformed
 

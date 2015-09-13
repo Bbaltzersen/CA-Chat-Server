@@ -9,13 +9,14 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import shared.ProtocolStrings;
 
 /**
  *
  * @author acer
  */
 public class ClientHandler extends Thread {
-
+    
     CaServer server;
     String username;
     Socket socket;
@@ -37,7 +38,7 @@ public class ClientHandler extends Thread {
         String input = sc.nextLine();
         parts = input.split("#");
 
-        if (!parts[0].equals("USER")) {
+        if (!input.startsWith(ProtocolStrings.USER)) {
             try {
                 socket.close();
             } catch (IOException ex) {
@@ -45,19 +46,21 @@ public class ClientHandler extends Thread {
             }
         }
         String uname = parts[1];
-        if (parts[0].equals("USER")) {
+        if (input.startsWith(ProtocolStrings.USER)) {
+            input = null;
             username = parts[1];
             server.addClientHandler(username, this);
         }
         parts = null;
 
         while (sc.hasNextLine()) {
+            
             System.out.println(username);
             input = sc.nextLine();
             System.out.println("In while loop: " + input);
             parts = input.split("#");
 
-            if (parts[0].equals("STOP")) {
+            if (input.equals(ProtocolStrings.STOP)) {
                 try {
                     endConnection();
                 } catch (IOException ex) {
@@ -67,16 +70,18 @@ public class ClientHandler extends Thread {
                 parts = null;
                 break;
             }
-            if (parts[0].equals("MSG") && !parts[1].equals(username)) {
-                if (parts[2] == null) {
+            if (input.startsWith(ProtocolStrings.MSG)) {
+                if (parts[1] == null || parts[2] == null) {
                     System.out.println("");
                 } else {
                     String recievers = parts[1];
                     String[] recS = recievers.split(",");
-                    String msg = "MSG#" + username + "#" + parts[2];
+                    String msg = ProtocolStrings.MSG + username + "#" + parts[2];
                     server.sendSpecific(msg, recS);
                 }
             }
+            
+            
 
         }
         try {
